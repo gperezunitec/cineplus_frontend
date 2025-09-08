@@ -1,13 +1,14 @@
 import {Button, Text, TextInput} from 'react-native';
 import {useNavigation} from "@react-navigation/core";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import GlobalContext from "../Provider/GlobalProvider";
 
 export default function Home() {
 
-    const navigation = useNavigation();
-    const [inputCorreo, setInputCorreo] = useState()
-    const [inputPassword, setInputPassword] = useState()
+    const {correoContext, setCorreoContext,passwordContext, setPasswordContext} = useContext(GlobalContext)
 
+
+    const navigation = useNavigation();
 
 
 
@@ -17,19 +18,21 @@ export default function Home() {
             <Text>Correo</Text>
             <TextInput
                 placeholder="Correo"
-                value={inputCorreo}
-                onChangeText={text => setInputCorreo(text)}
+                value={correoContext}
+                onChangeText={text => setCorreoContext(text)}
             />
             <Text>Password</Text>
             <TextInput
                 placeholder="Password"
-                value={inputPassword}
-                onChangeText={text => setInputPassword(text)}
+                value={passwordContext}
+                onChangeText={text => setPasswordContext(text)}
             />
             <Button title={"Ingresar"}></Button>
-            <Button title={"Ver Peliculas populares"}
-                    onPress={() => navigation.navigate('Peliculas Populares')}></Button>
+            <Button title={"Crear usuario"}></Button>
+            <Button title={"Ver Peliculas populares"} onPress={() => navigation.navigate('Peliculas Populares')}></Button>
+            <Text>{correoContext}</Text>
 
         </>
-    )
+    );
+
 }
