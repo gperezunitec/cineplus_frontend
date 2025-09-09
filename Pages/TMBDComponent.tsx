@@ -108,23 +108,6 @@ function TmbdComponent() {
                     ))}
                 </View>
 
-                <View style={styles.categoriesRow}>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Acción</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Comedia</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Romance</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                </View>
 
                 <Text style={styles.sectionTitle}>Mas populares</Text>
                 <View style={styles.movieRow}>
@@ -157,24 +140,7 @@ function TmbdComponent() {
                         
                     ))}
                 </View>
-                
-                 <View style={styles.categoriesRow}>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Acción</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Comedia</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                    <View style={styles.categoryItem}>
-                        <View style={styles.categoryPlaceholder} />
-                        <Text style={styles.categoryText}>Romance</Text>
-                        <Text style={styles.ratingText}>★★★★☆</Text>
-                    </View>
-                </View>
+
             </ScrollView>
             
         </View>
@@ -269,28 +235,7 @@ const styles = StyleSheet.create({
         height:20
 
     },
-    categoriesRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20
-    },
-    categoryItem: {
-        width: '30%',
-        alignItems: 'center',
-    },
-    categoryPlaceholder: {
-        width: '100%',
-        aspectRatio: 2 / 3,
-        backgroundColor: '#000',
-        borderRadius: 8,
-    },
-    categoryText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        position: 'absolute',
-        bottom: 15,
-        left: 10,
-    },
+
     ratingText: {
         color: '#FFD700', 
         position: 'absolute',
