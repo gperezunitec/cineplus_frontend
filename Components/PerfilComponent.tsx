@@ -1,9 +1,9 @@
 import React from 'react';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from "@react-navigation/native";
-import TMBDComponent from "./TMBDComponent";
-import InformacionUsuario from "./InformacionUsuario";
-import ListaFavoritos from "./ListaFavoritos";
+import TMBDComponent from "../Pages/TMBDComponent";
+import InformacionUsuario from "../Pages/InformacionUsuario";
+import ListaFavoritos from "../Pages/ListaFavoritos";
 
 export default function PerfilComponent() {
 

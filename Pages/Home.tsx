@@ -18,7 +18,7 @@ export default function Home() {
 
         try {
 
-            const response = await fetch("http://192.168.1.10:3000/usuarios/login", {
+            const response = await fetch("http://10.0.2.2:3000/usuarios/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -32,9 +32,14 @@ export default function Home() {
             const data = await response.json();
 
             if (response.ok) {
-                setIdContext(data.usuario.id);
-                Alert.alert("Éxito", "Usuario encontrado, iniciando sesión");
-                navigation.navigate("Perfil");
+                const id = data.usuario?.id;
+                if (!id) {
+                    Alert.alert("Error", "No se pudo obtener el ID del usuario");
+                    return;
+                }
+                setIdContext(id);
+                Alert.alert("Éxito", `Usuario encontrado, iniciando sesión`);
+                navigation.navigate("Perfil");////MODIFICADO
             } else {
                 Alert.alert("Error", data.message || "Usuario no encontrado");
             }
@@ -53,7 +58,7 @@ export default function Home() {
         }
 
         try {
-            const response = await fetch("http://localhost:3000/usuarios", {
+            const response = await fetch("http://10.0.2.2:3000/usuarios", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,7 +104,7 @@ export default function Home() {
             />
             <Button title={"Ingresar"} onPress={comprobarUsuario}></Button>
             <Button title={"Crear usuario"} onPress={crearUsuario}></Button>
-            <Button title={"Ver Peliculas populares"} onPress={() => navigation.navigate('Peliculas Populares')}></Button>
+
 
 
         </>
