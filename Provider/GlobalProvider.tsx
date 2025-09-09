@@ -7,12 +7,13 @@ const GlobalContext=createContext();
 const GlobalProvider=({children}:Plantilla)=>{
 
 
+    const [idContext, setIdContext] = useState()
     const [correoContext, setCorreoContext] = useState()
     const [passwordContext, setPasswordContext] = useState()
 
 
     return (
-        <GlobalContext.Provider value={{correoContext, setCorreoContext,passwordContext, setPasswordContext}}>
+        <GlobalContext.Provider value={{correoContext, setCorreoContext,passwordContext, setPasswordContext, idContext,setIdContext}}>
             {children}
         </GlobalContext.Provider>
     )
