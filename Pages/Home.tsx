@@ -1,7 +1,9 @@
-import {Alert, Button, Text, TextInput} from 'react-native';
+import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import {useNavigation} from "@react-navigation/core";
 import {useContext, useState} from "react";
 import GlobalContext from "../Provider/GlobalProvider";
+import Logo from '../assets/imagenes/LogoCineplus.png';
+
 
 export default function Home() {
 
@@ -85,29 +87,129 @@ export default function Home() {
     };
 
 
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoContainer}>
+                <Image
+                    source={Logo}
+                    style={styles.logo}
+                />
+            </View>
+
+            <Text style={styles.heading}>INICIO DE SESIÓN</Text>
+
+            <View style={styles.formContainer}>
+                <Text style={styles.label}>CORREO</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Correo"
+                    placeholderTextColor="#888"
+                    value={correoContext}
+                    onChangeText={text => setCorreoContext(text)}
+                />
+
+                <Text style={styles.label}>PASSWORD</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    placeholderTextColor="#888"
+                    secureTextEntry
+                    value={passwordContext}
+                    onChangeText={text => setPasswordContext(text)}
+                />
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={comprobarUsuario}>
+                    <Text style={styles.buttonText}>Ingresar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={crearUsuario}>
+                    <Text style={styles.buttonText}>Crear usuario</Text>
+                </TouchableOpacity>
+            </View>
 
 
-    return(
-        <>
-            <Text>Inicio de Sesion</Text>
-            <Text>Correo</Text>
-            <TextInput
-                placeholder="Correo"
-                value={correoContext}
-                onChangeText={text => setCorreoContext(text)}
+            <Button
+                title="Ver Películas populares"
+                onPress={() => navigation.navigate('Peliculas Populares')}
             />
-            <Text>Password</Text>
-            <TextInput
-                placeholder="Password"
-                value={passwordContext}
-                onChangeText={text => setPasswordContext(text)}
-            />
-            <Button title={"Ingresar"} onPress={comprobarUsuario}></Button>
-            <Button title={"Crear usuario"} onPress={crearUsuario}></Button>
-
-
-
-        </>
+        </View>
     );
-
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        alignItems: 'center',
+        paddingTop: 50,
+    },
+    logoContainer: {
+        alignItems: 'center',
+        marginBottom: 30,
+    },
+    logo: {
+        width: 130,
+        height: 130,
+        marginBottom: 5,
+    },
+    heading: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 30,
+        color: '#000',
+    },
+    formContainer: {
+        width: '80%',
+    },
+    label: {
+        fontSize: 16,
+        color: '#0c0b0bff',
+        marginBottom: 5,
+        marginTop: 15,
+        fontWeight: 'bold'
+    },
+    input: {
+        backgroundColor: '#E0E0E0',
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: '#f7f2f2ff',
+    },
+    buttonContainer: {
+        marginTop: 30,
+        width: '80%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        backgroundColor: '#000',
+        paddingVertical: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        width: '48%',
+    },
+    buttonSecondary: {
+        backgroundColor: '#555',
+    },
+    buttonText: {
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    registerButton: {
+        marginTop: 20,
+        padding: 10,
+    },
+    registerText: {
+        color: '#888',
+        fontSize: 16,
+    },
+    registerLink: {
+        color: '#000',
+        fontWeight: 'bold',
+    }
+});
