@@ -27,8 +27,21 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/node": "^24.3.1",
     "@types/react": "~19.0.10",
     "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gperezunitec/cineplus_frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gperezunitec/cineplus_frontend/issues"
+  },
+  "homepage": "https://github.com/gperezunitec/cineplus_frontend#readme",
+  "description": ""
 }
