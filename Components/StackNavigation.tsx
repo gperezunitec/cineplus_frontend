@@ -9,8 +9,7 @@ import ListaFavoritos from "../Pages/ListaFavoritos";
 
 import Camara from './Camara'
 import Perfil from '../Pages/Perfil'
-import InformacionUsuario from "../Pages/InformacionUsuario";
-import ListaFavoritos from "../Pages/ListaFavoritos";
+
 
 export default function StackNavegacion() {
 
