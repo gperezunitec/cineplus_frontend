@@ -129,10 +129,6 @@ export default function Home() {
             </View>
 
 
-            <Button
-                title="Ver Películas populares"
-                onPress={() => navigation.navigate('Peliculas Populares')}
-            />
         </View>
     );
 }
