@@ -60,6 +60,16 @@ export default function Home() {
         }
 
         try {
+
+            const responseCheck = await fetch(`http://10.0.2.2:3000/usuarios?correo=${correoContext}`);
+            const usuariosExistentes = await responseCheck.json();
+
+            if (usuariosExistentes.length > 0) {
+                Alert.alert("Error", "El usuario ya existe con este correo");
+                return;
+            }
+
+
             const response = await fetch("http://10.0.2.2:3000/usuarios", {
                 method: "POST",
                 headers: {

@@ -9,6 +9,7 @@ import ListaFavoritos from "../Pages/ListaFavoritos";
 
 import Camara from './Camara'
 import Perfil from '../Pages/Perfil'
+import EditarFavorito from "../Pages/EditarFavorito";
 
 
 export default function StackNavegacion() {
@@ -26,7 +27,7 @@ export default function StackNavegacion() {
                 <Stack.Screen name={"Peliculas Populares"} component={TMBDComponent}></Stack.Screen>
                 <Stack.Screen name={"Camara"} component={Camara}></Stack.Screen>
                 <Stack.Screen name={"perfil"} component={Perfil}></Stack.Screen>
-
+                <Stack.Screen name={"EditarFavorito"} component={EditarFavorito}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 

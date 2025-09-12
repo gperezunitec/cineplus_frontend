@@ -12,14 +12,16 @@ export default function InformacionUsuario() {
 
     return(
         <>
-            <View style={styles.buttonContainer} >
-                <Text>{correoContext}</Text>
+            <View style={styles.container} >
+                <Text style={styles.label}>{correoContext}</Text>
+                <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Mis Favoritos')}>
                     <Text style={styles.buttonText}>Favoritos</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Peliculas Populares')}>
                     <Text style={styles.buttonText}>Populares</Text>
                 </TouchableOpacity>
+                </View>
             </View>
         </>
     );

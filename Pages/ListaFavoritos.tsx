@@ -1,12 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Text, FlatList, ActivityIndicator, Alert, StyleSheet, Button, TouchableOpacity} from "react-native";
 import GlobalContext from "../Provider/GlobalProvider";
+import {useNavigation} from "@react-navigation/core";
+import {useFocusEffect} from "@react-navigation/native";
 
 
 export default function ListaFavoritos() {
-    const { idContext } = useContext(GlobalContext);
+    const { idContext,comentarioContext,setComentarioContext,calificacionContext,setCalificacionContext,idFavoritoContext,setIdFavoritoContext,nombrePeliculaContext,setNombrePeliculaContext } = useContext(GlobalContext);
     const [favoritos, setFavoritos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigation = useNavigation();
 
     const cargarFavoritos = async () => {
         if (!idContext) {
@@ -57,6 +60,12 @@ export default function ListaFavoritos() {
         cargarFavoritos();
     }, [idContext]);
 
+    useFocusEffect(
+        useCallback(() => {
+            cargarFavoritos();
+        }, [idContext])
+    );
+
     if (loading) {
         return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
     }
@@ -78,7 +87,15 @@ export default function ListaFavoritos() {
                         <Text>⭐ Calificación: {item.calificacion || "N/A"}</Text>
                         <Text>💬 Comentario: {item.comentario || "Sin comentario"}</Text>
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button}>
+                            <TouchableOpacity style={styles.button}
+                                              onPress={() => {
+                                                  setComentarioContext(item.comentario);
+                                                  setCalificacionContext(item.calificacion);
+                                                  setIdFavoritoContext(item.id_favorito)
+                                                  setNombrePeliculaContext(item.nombre_pelicula)
+                                                  navigation.navigate("EditarFavorito");
+                                              }}>
+
                                 <Text style={styles.buttonText}>Editar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={() => eliminarFavorito(item.id_favorito)}>
