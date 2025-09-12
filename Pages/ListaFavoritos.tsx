@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { View, Text, FlatList, ActivityIndicator, Alert, StyleSheet } from "react-native";
-import GlobalContext from "../Provider/GlobalProvider";
+import { GlobalContext } from "../Provider/GlobalProvider";
 
 
 export default function ListaFavoritos() {

@@ -2,9 +2,9 @@ import {createContext, useState} from 'react'
 import {Plantilla} from "../Models/Plantilla";
 import {Text} from "react-native";
 
-const GlobalContext=createContext();
+export const GlobalContext = createContext<any>(null);
 
-const GlobalProvider=({children}:Plantilla)=>{
+const GlobalProvider = ({children}:Plantilla) => {
 
 
     const [idContext, setIdContext] = useState()
@@ -23,6 +23,4 @@ const GlobalProvider=({children}:Plantilla)=>{
 
 
 
-export{GlobalProvider};
-
-export default GlobalContext
+export default GlobalProvider;

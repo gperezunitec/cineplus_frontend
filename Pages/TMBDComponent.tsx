@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {fetchPopularMovies} from "../Services/Api";
 import {View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Button, Alert} from 'react-native';
-import GlobalContext from "../Provider/GlobalProvider";
+import { GlobalContext } from "../Provider/GlobalProvider";
 
 function TmbdComponent() {
     const [movies, setMovies] = useState([]);

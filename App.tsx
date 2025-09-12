@@ -2,15 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import BottomTabNavegacion from "./Components/BottomTabNavigation";
 import StackNavegacion from "./Components/StackNavigation";
-import {GlobalProvider} from "./Provider/GlobalProvider";
+import { createContext } from 'react';
+import GlobalProvider from "./Provider/GlobalProvider";
 
 export default function App() {
   return (
-
-      <GlobalProvider>
-          <StackNavegacion></StackNavegacion>
-      </GlobalProvider>
-
+    <GlobalProvider>
+      <StackNavegacion />
+    </GlobalProvider>
   );
 }
 

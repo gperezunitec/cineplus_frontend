@@ -1,7 +1,7 @@
 import {Alert, Button, Text, TextInput} from 'react-native';
 import {useNavigation} from "@react-navigation/core";
 import {useContext, useState} from "react";
-import GlobalContext from "../Provider/GlobalProvider";
+import { GlobalContext } from "../Provider/GlobalProvider";
 
 export default function Home() {
 
