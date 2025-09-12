@@ -1,13 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput} from 'react-native';
+import {useNavigation} from "@react-navigation/native";
 import {fetchPopularMovies} from "../Services/Api";
-import {View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Button, Alert} from 'react-native';
-import { GlobalContext } from "../Provider/GlobalProvider";
+import cineplusLogo from '../assets/imagenes/LogoCineplus.png';
+import profileImage from '../assets/imagenes/LogoCineplus.png';
+import { usePerfil } from '../context/PerfilContext';
+import GlobalContext from '../Provider/GlobalProvider';
 
-function TmbdComponent() {
+export default function TmbdComponent() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [favoritos, setFavoritos] = useState([]); // lista de favoritos para actualizar
+    const [favoritos, setFavoritos] = useState([]);
     const { idContext } = useContext(GlobalContext);
+
+    const navigation = useNavigation();
+    const { foto } = usePerfil();
 
     useEffect(() => {
         async function loadMovies() {
@@ -20,33 +27,33 @@ function TmbdComponent() {
                 setLoading(false);
             }
         }
-
         loadMovies();
     }, []);
 
-    const agregarAFavoritos = async (id_pelicula) => {
+    const agregarAFavoritos = async (id_pelicula, titulo) => {
         if (!idContext) {
-            Alert.alert("Error", "Debes iniciar sesión para agregar favoritos");
+            Alert.alert("Error", "Debes iniciar sesión para agregar a favoritos");
             return;
         }
 
         try {
-            const response = await fetch("http://10.0.2.2:3000/favoritos", {
+            const response = await fetch(`http://10.0.2.2:3000/favoritos`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     id_usuario: idContext,
                     id_pelicula: id_pelicula,
+                    titulo: titulo, // FIX: Use the 'titulo' parameter
                     comentario: "",
                     calificacion: null,
                 }),
             });
 
-            const nuevoFavorito = await response.json(); // parsea JSON solo una vez
+            const nuevoFavorito = await response.json();
 
             if (response.ok) {
-                setFavoritos(prev => [...prev, nuevoFavorito]); // Actualiza la lista en pantalla
-                Alert.alert("Éxito", "Película agregada a tus favoritos");
+                setFavoritos(prev => [...prev, nuevoFavorito]);
+                Alert.alert("Éxito", `La película ${titulo} ha sido agregada a tus favoritos ${id_pelicula}`)
             } else {
                 Alert.alert("Error", nuevoFavorito.error || "No se pudo agregar a favoritos");
             }
@@ -57,34 +64,182 @@ function TmbdComponent() {
     };
 
     if (loading) {
-        return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
+    const handleProfilePress = () => {
+        navigation.navigate('Perfil');
+    };
+
+    const handleMoviePress = (movie) => {
+        console.log("Navegar a la pantalla de detalles de la pelicula", movie.title);
+    };
+
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.titulo}>Películas Populares</Text>
-            {movies.map((movie) => (
-                <View key={movie.id} style={styles.item}>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Image source={cineplusLogo} style={styles.logoHeader} />
+                <TouchableOpacity onPress={handleProfilePress}>
                     <Image
-                        source={{ uri: `https://image.tmdb.org/t/p/w200${movie.poster_path}` }}
-                        style={styles.imagen}
+                        source={foto ? { uri: foto } : profileImage}
+                        style={styles.profileIcon}
                     />
-                    <Text style={styles.nombre}>{movie.title}</Text>
-                    <Text>📅 {movie.release_date}</Text>
-                    <Text>⭐ {movie.vote_count}</Text>
-                    <Button title="Agregar a Favoritos" onPress={() => agregarAFavoritos(movie.id)} />
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.searchBar}>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Buscar"
+                    placeholderTextColor="#888"
+                />
+            </View>
+
+            <ScrollView style={styles.scrollViewContent}>
+                <Text style={styles.sectionTitle}>Nuevos Estrenos</Text>
+                <View style={styles.movieRow}>
+                    {movies.slice(0, 3).map((movie) => (
+                        <TouchableOpacity
+                            key={movie.id}
+                            style={styles.movieItem}
+                            onPress={() => handleMoviePress(movie)}
+                        >
+                            <Image
+                                source={{ uri: `https://image.tmdb.org/t/p/w200${movie.poster_path}` }}
+                                style={styles.movieImage}
+                            />
+                            {/* Se añade el botón de favoritos */}
+                            <TouchableOpacity
+                                style={styles.favoriteButton}
+                                onPress={() => agregarAFavoritos(movie.id_pelicula,movie.title)}
+                            >
+                                <Text style={styles.favoriteButtonText}>❤</Text>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    ))}
                 </View>
-            ))}
-        </ScrollView>
+
+                <Text style={styles.sectionTitle}>Más populares</Text>
+                <View style={styles.movieRow}>
+                    {movies.slice(3, 6).map((movie) => (
+                        <TouchableOpacity
+                            key={movie.id}
+                            style={styles.movieItem}
+                            onPress={() => handleMoviePress(movie)}
+                        >
+                            <Image
+                                source={{ uri: `https://image.tmdb.org/t/p/w200${movie.poster_path}` }}
+                                style={styles.movieImage}
+                            />
+                            {/* Se añade el botón de favoritos */}
+                            <TouchableOpacity
+                                style={styles.favoriteButton}
+                                onPress={() => agregarAFavoritos(movie.id_pelicula,movie.title)}
+                            >
+                                <Text style={styles.favoriteButtonText}>❤</Text>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 20 },
-    titulo: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
-    item: { marginBottom: 20, alignItems: "center" },
-    imagen: { width: 100, height: 150, borderRadius: 8, marginBottom: 5 },
-    nombre: { fontWeight: "bold", fontSize: 16 },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingTop: 50,
+        paddingBottom: 10,
+    },
+    logoHeader: {
+        width: 80,
+        height: 80,
+        resizeMode: 'contain',
+    },
+    profileIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#ccc',
+    },
+    searchBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 20,
+        marginHorizontal: 20,
+        paddingHorizontal: 15,
+        marginBottom: 20,
+    },
+    searchIcon: {
+        fontSize: 18,
+        marginRight: 10,
+    },
+    searchInput: {
+        flex: 1,
+        height: 40,
+        fontSize: 16,
+    },
+    scrollViewContent: {
+        paddingHorizontal: 20,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 20,
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        paddingBottom: 5,
+    },
+    movieRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    movieItem: {
+        width: '30%',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    movieImage: {
+        width: '100%',
+        aspectRatio: 2 / 3,
+        borderRadius: 8,
+    },
+    favoriteButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        borderRadius: 15,
+        padding: 5,
+    },
+    favoriteButtonText: {
+        fontSize: 15,
+        color: 'red',
+    },
+    ratingText: {
+        color: '#FFD700',
+        position: 'absolute',
+        bottom: 5,
+        left: 10,
+    }
 });
-
-export default TmbdComponent;

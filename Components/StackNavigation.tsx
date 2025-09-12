@@ -7,6 +7,10 @@ import PerfilComponent from "./PerfilComponent";
 import InformacionUsuario from "../Pages/InformacionUsuario";
 import ListaFavoritos from "../Pages/ListaFavoritos";
 
+import Camara from './Camara'
+import Perfil from '../Pages/Perfil'
+
+
 export default function StackNavegacion() {
 
 
@@ -20,6 +24,9 @@ export default function StackNavegacion() {
                 <Stack.Screen name={"Perfil"} component={InformacionUsuario}></Stack.Screen>
                 <Stack.Screen name={"Mis Favoritos"} component={ListaFavoritos}></Stack.Screen>
                 <Stack.Screen name={"Peliculas Populares"} component={TMBDComponent}></Stack.Screen>
+                <Stack.Screen name={"Camara"} component={Camara}></Stack.Screen>
+                <Stack.Screen name={"perfil"} component={Perfil}></Stack.Screen>
+
             </Stack.Navigator>
         </NavigationContainer>
 
