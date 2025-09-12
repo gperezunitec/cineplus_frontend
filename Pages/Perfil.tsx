@@ -1,22 +1,22 @@
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal } from 'react-native'
 import React, { useState } from 'react'
-import cineplusLogo from '../assets/imagenes/LogoCineplus.png'
-import profileImage from '../assets/imagenes/LogoCineplus.png'
-import cameraIcon from '../assets/imagenes/Camara.png'
+const cineplusLogo = require('../assets/imagenes/LogoCineplus.png');
+const profileImage = require('../assets/imagenes/LogoCineplus.png');
+const cameraIcon = require('../assets/imagenes/Camara.png');
 import Camara from '../Components/Camara'
 import { usePerfil } from '../context/PerfilContext'
 
 export default function Perfil() {
   const userName = "Fabina Doe"
-  const userTopMovies = []
-  const userFavoriteMovies = []
+  const userTopMovies: any[] = []
+  const userFavoriteMovies: any[] = []
   const [showCamera, setShowCamera] = useState(false)
   const { foto } = usePerfil()
 
   const handleCameraPress = () => setShowCamera(true)
   const handleCloseCamera = () => setShowCamera(false)
 
-  const renderEmptyState = (message) => (
+  const renderEmptyState = (message: string) => (
     <View style={styles.emptyStateContainer}>
       <Text style={styles.emptyStateText}>{message}</Text>
     </View>

@@ -1,14 +1,14 @@
 import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import {useNavigation} from "@react-navigation/core";
 import {useContext, useState} from "react";
-import GlobalContext from "../Provider/GlobalProvider";
+import { GlobalContext } from "../Provider/GlobalProvider";
 import Logo from '../assets/imagenes/LogoCineplus.png';
 
 
 export default function Home() {
 
-    const {correoContext, setCorreoContext,passwordContext, setPasswordContext,idContext,setIdContext} = useContext(GlobalContext)
-    const navigation = useNavigation();
+    const {correoContext, setCorreoContext,passwordContext, setPasswordContext,idContext,setIdContext} = useContext(GlobalContext)!
+    const navigation = useNavigation<any>();
 
 
     //Login

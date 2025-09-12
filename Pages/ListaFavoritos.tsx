@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, FlatList, ActivityIndicator, Alert, StyleSheet, Button} from "react-native";
-import GlobalContext from "../Provider/GlobalProvider";
+import { GlobalContext } from "../Provider/GlobalProvider";
 
 
 export default function ListaFavoritos() {
-    const { idContext } = useContext(GlobalContext);
-    const [favoritos, setFavoritos] = useState([]);
+    const { idContext } = useContext(GlobalContext)!
+    const [favoritos, setFavoritos] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     const cargarFavoritos = async () => {
@@ -32,7 +32,7 @@ export default function ListaFavoritos() {
         }
     };
 
-    const eliminarFavorito = async (id_favorito) => {
+    const eliminarFavorito = async (id_favorito: number) => {
         try {
             const response = await fetch(`http://10.0.2.2:3000/favoritos/${id_favorito}`, {
                 method: "DELETE",

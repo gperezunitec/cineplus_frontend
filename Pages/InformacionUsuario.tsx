@@ -4,7 +4,7 @@ import {useNavigation} from "@react-navigation/core";
 
 
 export default function InformacionUsuario() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
 
 
     return(
