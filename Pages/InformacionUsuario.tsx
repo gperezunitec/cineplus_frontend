@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/core";
+import GlobalContext from "../Provider/GlobalProvider";
+
+
 
 
 export default function InformacionUsuario() {
     const navigation = useNavigation();
-
+    const { correoContext } = useContext(GlobalContext);
 
     return(
         <>
             <View style={styles.buttonContainer} >
+                <Text>{correoContext}</Text>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Mis Favoritos')}>
                     <Text style={styles.buttonText}>Favoritos</Text>
                 </TouchableOpacity>

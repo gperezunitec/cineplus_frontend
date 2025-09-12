@@ -12,6 +12,7 @@ const GlobalProvider=({children}:Plantilla)=>{
     const [passwordContext, setPasswordContext] = useState()
 
 
+
     return (
         <GlobalContext.Provider value={{correoContext, setCorreoContext,passwordContext, setPasswordContext, idContext,setIdContext}}>
             {children}

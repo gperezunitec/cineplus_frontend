@@ -74,7 +74,7 @@ export default function ListaFavoritos() {
                 renderItem={({ item }) => (
                     <View style={styles.item}>
 
-                        <Text style={styles.nombre}>🎬 {item.Pelicula?.titulo || "Título desconocido"}</Text>
+                        <Text style={styles.nombre}>🎬 {item.nombre_pelicula || "Título desconocido"}</Text>
                         <Text>⭐ Calificación: {item.calificacion || "N/A"}</Text>
                         <Text>💬 Comentario: {item.comentario || "Sin comentario"}</Text>
                         <View style={styles.buttonContainer}>

@@ -35,7 +35,7 @@ export default function TmbdComponent() {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////
-    const agregarAFavoritos = async ( titulopelicula) => {
+    const agregarAFavoritos = async ( titulopelicula,idPelicula) => {
         if (!idContext) {
             Alert.alert("Error", "Debes iniciar sesión para agregar a favoritos");
             return;
@@ -47,7 +47,8 @@ export default function TmbdComponent() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     id_usuario: idContext,
-                    titulo: titulopelicula,
+                    id_pelicula:idPelicula,
+                    nombre_pelicula: titulopelicula,
                     comentario: "",
                     calificacion: null,
                 }),
@@ -124,7 +125,7 @@ export default function TmbdComponent() {
                             {/* Se añade el botón de favoritos */}
                             <TouchableOpacity
                                 style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.title)}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
                                 <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
@@ -147,7 +148,7 @@ export default function TmbdComponent() {
                             {/* Se añade el botón de favoritos */}
                             <TouchableOpacity
                                 style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.title)}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
                                 <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
