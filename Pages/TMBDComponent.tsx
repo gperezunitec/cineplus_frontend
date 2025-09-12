@@ -2,18 +2,24 @@ import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput} from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import {fetchPopularMovies} from "../Services/Api";
+interface Movie {
+    id: number;
+    id_pelicula?: number;
+    title: string;
+    poster_path: string;
+}
 import cineplusLogo from '../assets/imagenes/LogoCineplus.png';
-import profileImage from '../assets/imagenes/LogoCineplus.png';
+import profileImage from '../assets/imagenes/Camara.png';
 import { usePerfil } from '../context/PerfilContext';
-import GlobalContext from '../Provider/GlobalProvider';
+import { GlobalContext } from '../Provider/GlobalProvider';
 
 export default function TmbdComponent() {
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
-    const [favoritos, setFavoritos] = useState([]);
-    const { idContext } = useContext(GlobalContext);
+    const [favoritos, setFavoritos] = useState<any[]>([]);
+    const { idContext } = useContext(GlobalContext)!
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const { foto } = usePerfil();
 
     useEffect(() => {
@@ -30,7 +36,7 @@ export default function TmbdComponent() {
         loadMovies();
     }, []);
 
-    const agregarAFavoritos = async (id_pelicula, titulo) => {
+    const agregarAFavoritos = async (id_pelicula: number, titulo: string) => {
         if (!idContext) {
             Alert.alert("Error", "Debes iniciar sesión para agregar a favoritos");
             return;
@@ -75,7 +81,7 @@ export default function TmbdComponent() {
         navigation.navigate('Perfil');
     };
 
-    const handleMoviePress = (movie) => {
+    const handleMoviePress = (movie: Movie) => {
         console.log("Navegar a la pantalla de detalles de la pelicula", movie.title);
     };
 
@@ -113,12 +119,18 @@ export default function TmbdComponent() {
                                 style={styles.movieImage}
                             />
                             {/* Se añade el botón de favoritos */}
-                            <TouchableOpacity
-                                style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.id_pelicula,movie.title)}
-                            >
-                                <Text style={styles.favoriteButtonText}>❤</Text>
-                            </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                                style={styles.favoriteButton}
+                                                                onPress={() => {
+                                                                    if (typeof movie.id_pelicula === 'number') {
+                                                                        agregarAFavoritos(movie.id_pelicula, movie.title);
+                                                                    } else {
+                                                                        Alert.alert('Error', 'ID de película no válido');
+                                                                    }
+                                                                }}
+                                                        >
+                                                                <Text style={styles.favoriteButtonText}>❤</Text>
+                                                        </TouchableOpacity>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -136,12 +148,18 @@ export default function TmbdComponent() {
                                 style={styles.movieImage}
                             />
                             {/* Se añade el botón de favoritos */}
-                            <TouchableOpacity
-                                style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.id_pelicula,movie.title)}
-                            >
-                                <Text style={styles.favoriteButtonText}>❤</Text>
-                            </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                                style={styles.favoriteButton}
+                                                                onPress={() => {
+                                                                    if (typeof movie.id_pelicula === 'number') {
+                                                                        agregarAFavoritos(movie.id_pelicula, movie.title);
+                                                                    } else {
+                                                                        Alert.alert('Error', 'ID de película no válido');
+                                                                    }
+                                                                }}
+                                                        >
+                                                                <Text style={styles.favoriteButtonText}>❤</Text>
+                                                        </TouchableOpacity>
                         </TouchableOpacity>
                     ))}
                 </View>
