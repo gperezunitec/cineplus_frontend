@@ -1,73 +1,107 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native'
-import { useNavigation } from "@react-navigation/native"
-import { fetchPopularMovies } from "../Services/Api"
-import cineplusLogo from '../assets/imagenes/LogoCineplus.png'
-import profileImage from '../assets/imagenes/LogoCineplus.png'
-import heartIcon from '../assets/imagenes/heartIcon.png'
-import heartFilledIcon from '../assets/imagenes/heartFilledIcon.png'
+import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput} from 'react-native';
+import {useNavigation} from "@react-navigation/native";
+import {fetchPopularMovies} from "../Services/Api";
+import cineplusLogo from '../assets/imagenes/LogoCineplus.png';
+import profileImage from '../assets/imagenes/LogoCineplus.png';
+import { usePerfil } from '../context/PerfilContext';
+import GlobalContext from '../Provider/GlobalProvider';
 
-function TmbdComponent() {
-    const [movies, setMovies] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [favorites, setFavorites] = useState(new Set())
-    const navigation = useNavigation()
+export default function TmbdComponent() {
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [favoritos, setFavoritos] = useState([]);
+    const { idContext } = useContext(GlobalContext);
+
+    const navigation = useNavigation();
+    const { foto } = usePerfil();
 
     useEffect(() => {
         async function loadMovies() {
             try {
-                const data = await fetchPopularMovies()
-                setMovies(data)
+                const data = await fetchPopularMovies();
+                setMovies(data);
             } catch (error) {
-                console.error('Error al obtener películas:', error)
+                console.error("Error al obtener películas:", error);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
-        loadMovies()
-    }, [])
+        loadMovies();
+    }, []);
 
 
 
-    const handleProfilePress = () => {
-        navigation.navigate('Perfil') 
-    }
 
-    const handleMoviePress = (movie) => {
-        console.log("Navegar a la pantalla de detalles de la pelicula", movie.title)
-    }
 
-    const toggleFavorite = (movieId) => {
-        setFavorites(prevFavorites =>{
-            const newFavorites = new Set(prevFavorites)
-            if (newFavorites.has(movieId)){
-                newFavorites.delete(movieId)
-            } else{
-                newFavorites.add(movieId)
+    ///////////////////////////////////////////////////////////////////////////////////////
+    const agregarAFavoritos = async ( titulopelicula,idPelicula) => {
+        if (!idContext) {
+            Alert.alert("Error", "Debes iniciar sesión para agregar a favoritos");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://10.0.2.2:3000/favoritos`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id_usuario: idContext,
+                    id_pelicula:idPelicula,
+                    nombre_pelicula: titulopelicula,
+                    comentario: "",
+                    calificacion: null,
+                }),
+            });
+
+            const nuevoFavorito = await response.json();
+
+            if (response.ok) {
+
+                setFavoritos(prev => [...prev, nuevoFavorito]);
+                Alert.alert("Éxito", `La película ${titulopelicula} ha sido agregada a tus favoritos  `)
+            } else {
+                Alert.alert("Error", nuevoFavorito.error || "No se pudo agregar a favoritos");
             }
-            return newFavorites
-        })
-    }
+        } catch (error) {
+            console.error(error);
+            Alert.alert("Error", "No se pudo conectar con el servidor");
+        }
+    };
 
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#000000" />
+                <ActivityIndicator size="large" color="#0000ff" />
             </View>
-        )
+        );
     }
+
+    const handleProfilePress = () => {
+        navigation.navigate('Perfil');
+    };
+
+    const handleMoviePress = (movie) => {
+        console.log("Navegar a la pantalla de detalles de la pelicula", movie.title);
+    };
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image source={cineplusLogo} style={styles.logoHeader} />
                 <TouchableOpacity onPress={handleProfilePress}>
-                    <Image source={profileImage} style={styles.profileIcon} />
+                    <Image
+                        source={foto ? { uri: foto } : profileImage}
+                        style={styles.profileIcon}
+                    />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.searchBar}>
-                <Text style={styles.searchIcon}></Text>
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Buscar"
@@ -79,74 +113,56 @@ function TmbdComponent() {
                 <Text style={styles.sectionTitle}>Nuevos Estrenos</Text>
                 <View style={styles.movieRow}>
                     {movies.slice(0, 3).map((movie) => (
-
-                        <TouchableOpacity 
-                        key={movie.id}
-                        style={styles.movieItem}
-                        onPress={() => handleMoviePress(movie)}
+                        <TouchableOpacity
+                            key={movie.id}
+                            style={styles.movieItem}
+                            onPress={() => handleMoviePress(movie)}
                         >
                             <Image
                                 source={{ uri: `https://image.tmdb.org/t/p/w200${movie.poster_path}` }}
                                 style={styles.movieImage}
                             />
-
-                            <TouchableOpacity 
-                            style = {styles.favoriteButton}
-                            onPress={() => toggleFavorite(movie.id)}
-
+                            {/* Se añade el botón de favoritos */}
+                            <TouchableOpacity
+                                style={styles.favoriteButton}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
-                                <image 
-                                source = {favorites.has(movie.id) ? heartFilledIcon : heartIcon}
-                                style={styles.favoriteIcon}
-                                />
+                                <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
-
-
                         </TouchableOpacity>
-                            
-                        
                     ))}
                 </View>
 
-
-                <Text style={styles.sectionTitle}>Mas populares</Text>
+                <Text style={styles.sectionTitle}>Más populares</Text>
                 <View style={styles.movieRow}>
                     {movies.slice(3, 6).map((movie) => (
-                        <TouchableOpacity 
-                        key={movie.id}
-                        style={styles.movieItem}
-                        onPress={() => handleMoviePress(movie)}
+                        <TouchableOpacity
+                            key={movie.id}
+                            style={styles.movieItem}
+                            onPress={() => handleMoviePress(movie)}
                         >
-                             <Image
+                            <Image
                                 source={{ uri: `https://image.tmdb.org/t/p/w200${movie.poster_path}` }}
                                 style={styles.movieImage}
                             />
-
-                            <TouchableOpacity 
-                            style = {styles.favoriteButton}
-                            onPress={() => toggleFavorite(movie.id)}
-
+                            {/* Se añade el botón de favoritos */}
+                            <TouchableOpacity
+                                style={styles.favoriteButton}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
-                                <image 
-                                source = {favorites.has(movie.id) ? heartFilledIcon : heartIcon}
-                                style={styles.favoriteIcon}
-                                />
+                                <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
-                             
-
-
                         </TouchableOpacity>
-                        
-                        
                     ))}
                 </View>
-
             </ScrollView>
-            
         </View>
-    )
+    );
 }
 
+
+
+///////////////////////////////////////////
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -167,7 +183,7 @@ const styles = StyleSheet.create({
     },
     logoHeader: {
         width: 80,
-        height: 30,
+        height: 80,
         resizeMode: 'contain',
     },
     profileIcon: {
@@ -214,35 +230,29 @@ const styles = StyleSheet.create({
     movieItem: {
         width: '30%',
         alignItems: 'center',
-        position : 'relative'
+        position: 'relative',
     },
     movieImage: {
         width: '100%',
         aspectRatio: 2 / 3,
         borderRadius: 8,
     },
-    favoriteButton : {
+    favoriteButton: {
         position: 'absolute',
         top: 5,
         right: 5,
-        backgroundColor: 'rgba(255, 255, 255, 0.7',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
         borderRadius: 15,
-        padding:5
-
+        padding: 5,
     },
-    favoriteIcon:{
-        width:20,
-        height:20
-
+    favoriteButtonText: {
+        fontSize: 15,
+        color: 'red',
     },
-
     ratingText: {
-        color: '#FFD700', 
+        color: '#FFD700',
         position: 'absolute',
         bottom: 5,
         left: 10,
     }
-   
-})
-
-export default TmbdComponent;
+});
