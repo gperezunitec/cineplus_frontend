@@ -1,7 +1,8 @@
-import React, {useContext} from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, {useContext, useState} from 'react';
+import {Button, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/core";
 import GlobalContext from "../Provider/GlobalProvider";
+import * as ImagePicker from 'expo-image-picker'
 
 
 
@@ -9,11 +10,62 @@ import GlobalContext from "../Provider/GlobalProvider";
 export default function InformacionUsuario() {
     const navigation = useNavigation();
     const { correoContext } = useContext(GlobalContext);
+    const [image, setImage] = useState('')
+
+
+    async function pickImage(){
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes:['images','videos'],
+            allowsEditing:false,
+            quality:1,
+        })
+
+        if (!result.canceled){
+            console.log(result.assets[0])
+            setImage(result.assets[0].uri)
+        }
+    }
+
+    async function takePhoto(){
+        const result = await ImagePicker.launchCameraAsync({
+            allowsEditing:true,
+            quality:1,
+        })
+
+        if (!result.canceled){
+            console.log(result.assets[0])
+            setImage(result.assets[0].uri)
+        }
+    }
 
     return(
         <>
             <View style={styles.container} >
+
+                <View style={styles.imageContainer}>
+                    {
+                        image && (
+                            <Image source={{uri:image}} style={styles.image}></Image>
+                        )
+                    }
+                </View>
+
+
                 <Text style={styles.label}>{correoContext}</Text>
+
+                <View style={styles.buttonContainer}>
+
+                    <TouchableOpacity style={styles.button} onPress={pickImage}>
+                        <Text style={styles.buttonText}>Abrir Galeria</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={takePhoto}>
+                        <Text style={styles.buttonText}>Tomar Fotografia</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+
+
                 <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Mis Favoritos')}>
                     <Text style={styles.buttonText}>Favoritos</Text>
@@ -104,5 +156,15 @@ const styles = StyleSheet.create({
     registerLink: {
         color: '#000',
         fontWeight: 'bold',
+    },
+    imageContainer: {
+        marginTop: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    image:{
+        height: 100,
+        width: 100,
+        borderRadius: 10,
     }
 });
