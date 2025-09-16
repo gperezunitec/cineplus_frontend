@@ -26,7 +26,6 @@ export default function StackNavegacion() {
                 <Stack.Screen name={"Mis Favoritos"} component={ListaFavoritos}></Stack.Screen>
                 <Stack.Screen name={"Peliculas Populares"} component={TMBDComponent}></Stack.Screen>
                 <Stack.Screen name={"Camara"} component={Camara}></Stack.Screen>
-                <Stack.Screen name={"perfil"} component={Perfil}></Stack.Screen>
                 <Stack.Screen name={"EditarFavorito"} component={EditarFavorito}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
