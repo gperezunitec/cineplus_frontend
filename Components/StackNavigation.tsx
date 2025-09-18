@@ -7,8 +7,7 @@ import PerfilComponent from "./PerfilComponent";
 import InformacionUsuario from "../Pages/InformacionUsuario";
 import ListaFavoritos from "../Pages/ListaFavoritos";
 
-import Camara from './Camara'
-import Perfil from '../Pages/Perfil'
+
 import EditarFavorito from "../Pages/EditarFavorito";
 
 
