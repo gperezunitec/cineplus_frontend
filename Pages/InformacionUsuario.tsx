@@ -3,6 +3,7 @@ import {Button, Image, StyleSheet, Text, TouchableOpacity, View} from "react-nat
 import {useNavigation} from "@react-navigation/core";
 import GlobalContext from "../Provider/GlobalProvider";
 import * as ImagePicker from 'expo-image-picker'
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -38,133 +39,138 @@ export default function InformacionUsuario() {
         }
     }
 
-    return(
-        <>
-            <View style={styles.container} >
+    return (
 
-                <View style={styles.imageContainer}>
-                    {
-                        image && (
-                            <Image source={{uri:image}} style={styles.image}></Image>
-                        )
-                    }
+        <View style={styles.container}>
+            <View style={styles.profileCard}>
+                <View style={styles.imagen}>
+                {image ? (
+                    <Image source={{ uri: image }} style={styles.image}></Image>
+                    ) : (
+                        <View style={styles.placeholder}>
+                        <Ionicons name="person" size={60} color="#ccc" />
+                        </View>
+                    )}
                 </View>
 
+                <Text style={styles.name}>{correoContext}</Text>
+                <Text style={styles.subtitle}>Mi Perfil</Text>
 
-                <Text style={styles.label}>{correoContext}</Text>
-
-                <View style={styles.buttonContainer}>
-
-                    <TouchableOpacity style={styles.button} onPress={pickImage}>
-                        <Text style={styles.buttonText}>Abrir Galeria</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={takePhoto}>
-                        <Text style={styles.buttonText}>Tomar Fotografia</Text>
+                <View style={styles.actionRow}>
+                    <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
+                        <Ionicons name="image" size={28} color="#fff" />
+                        <Text style={styles.roundText}>Galería</Text>
                     </TouchableOpacity>
 
+                    <TouchableOpacity style={styles.roundButton} onPress={takePhoto}>
+                        <Ionicons name="camera" size={28} color="#fff" />
+                        <Text style={styles.roundText}>Cámara</Text>
+                    </TouchableOpacity>
                 </View>
 
-
-
-                <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Mis Favoritos')}>
-                    <Text style={styles.buttonText}>Favoritos</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Peliculas Populares')}>
-                    <Text style={styles.buttonText}>Populares</Text>
-                </TouchableOpacity>
+                <View style={styles.navRow}>
+                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Mis Favoritos')}>
+                        <Text style={styles.navText}>Favoritos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Peliculas Populares')}>
+                        <Text style={styles.navText}>Populares</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-        </>
-    );
+        </View>
+    )
+    }
 
-};
-
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        paddingTop: 50,
+    const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        backgroundColor:'#ffffff',
+        justifyContent:'center',
+        alignItems:'center',
     },
-    logoContainer: {
-        alignItems: 'center',
-        marginBottom: 30,
+    profileCard:{
+        width:'90%',
+        backgroundColor:'#ffffff',
+        alignItems:'center',
+        paddingVertical:40,
+        paddingHorizontal:20,
+        shadowColor:'#ffffff',
+        shadowOffset:{width:0,height:4},
+        shadowOpacity:0.1,
+        shadowRadius:10,
+        elevation:8,
     },
-    logo: {
-        width: 130,
-        height: 130,
-        marginBottom: 5,
-    },
-    heading: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 30,
-        color: '#000',
-    },
-    formContainer: {
-        width: '80%',
-    },
-    label: {
-        fontSize: 16,
-        color: '#0c0b0bff',
-        marginBottom: 5,
-        marginTop: 15,
-        fontWeight: 'bold'
-    },
-    input: {
-        backgroundColor: '#E0E0E0',
-        borderRadius: 8,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: '#f7f2f2ff',
-    },
-    buttonContainer: {
-        marginTop: 30,
-        width: '80%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    button: {
-        backgroundColor: '#000',
-        paddingVertical: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        width: '48%',
-    },
-    buttonSecondary: {
-        backgroundColor: '#555',
-    },
-    buttonText: {
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    registerButton: {
-        marginTop: 20,
-        padding: 10,
-    },
-    registerText: {
-        color: '#888',
-        fontSize: 16,
-    },
-    registerLink: {
-        color: '#000',
-        fontWeight: 'bold',
-    },
-    imageContainer: {
-        marginTop: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
+    imagen:{
+        marginBottom:20,
     },
     image:{
-        height: 100,
-        width: 100,
-        borderRadius: 10,
+        width:140,
+        height:140,
+        borderRadius:70,
+        borderWidth:3,
+        borderColor:'#040405ff',
+    },
+    placeholder:{
+        width:140,
+        height:140,
+        borderRadius:70,
+        backgroundColor:'#e0e0e0',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    name:{
+        fontSize:22,
+        fontWeight:'700',
+        color:'#333',
+        marginBottom:4,
+    },
+    subtitle:{
+        fontSize:16,
+        color:'#666',
+        marginBottom:30,
+    },
+    actionRow:{
+        flexDirection:'row',
+        justifyContent:'space-around',
+        width:'100%',
+        marginBottom:30,
+    },
+    roundButton:{
+        backgroundColor:'#090d13ff',
+        width:90,
+        height:90,
+        borderRadius:45,
+        justifyContent:'center',
+        alignItems:'center',
+        marginHorizontal:15,
+        elevation:4,
+        shadowColor:'#05090eff',
+        shadowOffset:{width:0,height:2},
+        shadowOpacity:0.2,
+        shadowRadius:4,
+    },
+    roundText:{
+        marginTop:6,
+        color:'#fff',
+        fontSize:14,
+        fontWeight:'500',
+    },
+    navRow:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        width:'100%',
+    },
+    navButton:{
+        backgroundColor:'#08080dff',
+        paddingVertical:14,
+        borderRadius:12,
+        width:'48%',
+        alignItems:'center',
+        elevation:3,
+    },
+    navText:{
+        color:'#fff',
+        fontSize:16,
+        fontWeight:'600',
     }
-});
+    })
