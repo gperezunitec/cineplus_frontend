@@ -10,10 +10,15 @@ const GlobalProvider=({children}:Plantilla)=>{
     const [idContext, setIdContext] = useState()
     const [correoContext, setCorreoContext] = useState()
     const [passwordContext, setPasswordContext] = useState()
+    const [comentarioContext, setComentarioContext] = useState()
+    const [calificacionContext, setCalificacionContext] = useState()
+    const [idFavoritoContext, setIdFavoritoContext] = useState()
+    const [nombrePeliculaContext, setNombrePeliculaContext] = useState()
+
 
 
     return (
-        <GlobalContext.Provider value={{correoContext, setCorreoContext,passwordContext, setPasswordContext, idContext,setIdContext}}>
+        <GlobalContext.Provider value={{correoContext, setCorreoContext,passwordContext, setPasswordContext, idContext,setIdContext,comentarioContext,setComentarioContext,calificacionContext,setCalificacionContext,idFavoritoContext,setIdFavoritoContext,nombrePeliculaContext,setNombrePeliculaContext}}>
             {children}
         </GlobalContext.Provider>
     )

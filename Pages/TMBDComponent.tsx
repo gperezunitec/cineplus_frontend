@@ -30,19 +30,25 @@ export default function TmbdComponent() {
         loadMovies();
     }, []);
 
-    const agregarAFavoritos = async (id_pelicula) => {
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+    const agregarAFavoritos = async ( titulopelicula,idPelicula) => {
         if (!idContext) {
             Alert.alert("Error", "Debes iniciar sesión para agregar a favoritos");
             return;
         }
 
         try {
-            const response = await fetch("http://192.168.1.10:3000/favoritos", {
+            const response = await fetch(`http://10.0.2.2:3000/favoritos`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     id_usuario: idContext,
-                    id_pelicula: id_pelicula,
+                    id_pelicula:idPelicula,
+                    nombre_pelicula: titulopelicula,
                     comentario: "",
                     calificacion: null,
                 }),
@@ -51,8 +57,9 @@ export default function TmbdComponent() {
             const nuevoFavorito = await response.json();
 
             if (response.ok) {
+
                 setFavoritos(prev => [...prev, nuevoFavorito]);
-                Alert.alert("Éxito", "Película agregada a tus favoritos");
+                Alert.alert("Éxito", `La película ${titulopelicula} ha sido agregada a tus favoritos  `)
             } else {
                 Alert.alert("Error", nuevoFavorito.error || "No se pudo agregar a favoritos");
             }
@@ -77,6 +84,10 @@ export default function TmbdComponent() {
     const handleMoviePress = (movie) => {
         console.log("Navegar a la pantalla de detalles de la pelicula", movie.title);
     };
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
 
     return (
         <View style={styles.container}>
@@ -114,7 +125,7 @@ export default function TmbdComponent() {
                             {/* Se añade el botón de favoritos */}
                             <TouchableOpacity
                                 style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.id)}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
                                 <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
@@ -137,7 +148,7 @@ export default function TmbdComponent() {
                             {/* Se añade el botón de favoritos */}
                             <TouchableOpacity
                                 style={styles.favoriteButton}
-                                onPress={() => agregarAFavoritos(movie.id)}
+                                onPress={() => agregarAFavoritos(movie.title,movie.id)}
                             >
                                 <Text style={styles.favoriteButtonText}>❤</Text>
                             </TouchableOpacity>
@@ -149,6 +160,9 @@ export default function TmbdComponent() {
     );
 }
 
+
+
+///////////////////////////////////////////
 const styles = StyleSheet.create({
     container: {
         flex: 1,

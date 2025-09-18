@@ -3,11 +3,14 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import TMBDComponent from "../Pages/TMBDComponent";
 import Home from "../Pages/Home";
+import PerfilComponent from "./PerfilComponent";
+import InformacionUsuario from "../Pages/InformacionUsuario";
+import ListaFavoritos from "../Pages/ListaFavoritos";
 
 import Camara from './Camara'
 import Perfil from '../Pages/Perfil'
-import InformacionUsuario from "../Pages/InformacionUsuario";
-import ListaFavoritos from "../Pages/ListaFavoritos";
+import EditarFavorito from "../Pages/EditarFavorito";
+
 
 export default function StackNavegacion() {
 
@@ -22,9 +25,7 @@ export default function StackNavegacion() {
                 <Stack.Screen name={"Perfil"} component={InformacionUsuario}></Stack.Screen>
                 <Stack.Screen name={"Mis Favoritos"} component={ListaFavoritos}></Stack.Screen>
                 <Stack.Screen name={"Peliculas Populares"} component={TMBDComponent}></Stack.Screen>
-                <Stack.Screen name={"Camara"} component={Camara}></Stack.Screen>
-                <Stack.Screen name={"perfil"} component={Perfil}></Stack.Screen>
-
+                <Stack.Screen name={"EditarFavorito"} component={EditarFavorito}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 
