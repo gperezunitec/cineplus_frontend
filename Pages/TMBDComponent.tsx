@@ -7,11 +7,14 @@ import profileImage from '../assets/imagenes/LogoCineplus.png';
 import { usePerfil } from '../context/PerfilContext';
 import GlobalContext from '../Provider/GlobalProvider';
 
+
 export default function TmbdComponent() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [favoritos, setFavoritos] = useState([]);
     const { idContext } = useContext(GlobalContext);
+    const [search, setSearch] = useState("");
+    
 
     const navigation = useNavigation();
     const { foto } = usePerfil();
@@ -30,9 +33,9 @@ export default function TmbdComponent() {
         loadMovies();
     }, []);
 
-
-
-
+     const filtrarMovies = movies.filter(movie =>
+        movie.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     ///////////////////////////////////////////////////////////////////////////////////////
     const agregarAFavoritos = async ( titulopelicula,idPelicula) => {
@@ -42,7 +45,7 @@ export default function TmbdComponent() {
         }
 
         try {
-            const response = await fetch(`http://10.0.2.2:3000/favoritos`, {
+            const response = await fetch(`http://localhost:3000/favoritos`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -106,13 +109,15 @@ export default function TmbdComponent() {
                     style={styles.searchInput}
                     placeholder="Buscar"
                     placeholderTextColor="#888"
+                    value={search}
+                    onChangeText={setSearch}
                 />
             </View>
 
             <ScrollView style={styles.scrollViewContent}>
                 <Text style={styles.sectionTitle}>Nuevos Estrenos</Text>
                 <View style={styles.movieRow}>
-                    {movies.slice(0, 3).map((movie) => (
+                    {filtrarMovies.slice(0,3).map((movie) => (
                         <TouchableOpacity
                             key={movie.id}
                             style={styles.movieItem}
